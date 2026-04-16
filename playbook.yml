@@ -9,8 +9,14 @@
         src: "/var/snap/jenkins/5013/workspace/2023MavenWebAppPipelineWithAnsible/target/2023MavenWebAppPipelineWithAnsible.war"
         dest: "/opt/tomcat/webapps/2023MavenWebAppPipelineWithAnsible.war"
         remote_src: no
+        mode: '0644'
 
-    - name: Restart Tomcat
-      shell: |
-        /opt/tomcat/bin/shutdown.sh || true
-        /opt/tomcat/bin/startup.sh
+    - name: Stop Tomcat
+      shell: /opt/tomcat/bin/shutdown.sh || true
+
+    - name: Wait for Tomcat to stop
+      pause:
+        seconds: 5
+
+    - name: Start Tomcat
+      shell: /opt/tomcat/bin/startup.sh
